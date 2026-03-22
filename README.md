@@ -1,16 +1,16 @@
-# Smart Travel Planner 🚀
+# Smart Travel Planner 
 
 ## Overview
 Smart Travel Planner is an AI-powered travel route optimization system that helps users find the best routes based on their preferences, persona, travel time, and constraints like blocked cities.
 
 ## Features
-- ✅ Route optimization (Cheap, Fast, Comfortable, Balanced)
-- ✅ Persona-based planning (Student, Tourist, Business, etc.)
-- ✅ Day/Night travel filtering
-- ✅ Blocked cities selection from predefined list
-- ✅ Detailed route explanations with AI reasoning
-- ✅ Interactive CLI test interface
-- ✅ Flask backend API ready for web deployment
+-  Route optimization (Cheap, Fast, Comfortable, Balanced)
+-  Persona-based planning (Student, Tourist, Business, etc.)
+-  Day/Night travel filtering
+-  Blocked cities selection from predefined list
+-  Detailed route explanations with AI reasoning
+-  Interactive CLI test interface
+-  Flask backend API ready for web deployment
 
 ## Tech Stack
 ```
@@ -30,15 +30,15 @@ smart_travel/
 │   ├── planner.py    # Route planning
 │   ├── persona.py    # Persona handling
 │   ├── preferences.py# Preference matching
-│   └── test.py       # Interactive CLI tester ✅
+│   └── test.py       # Interactive CLI tester 
 ├── data/             # Data files
 │   ├── routes.csv    # Travel routes database
-│   └── blocked_cities.csv # Blocked cities ✅
+│   └── blocked_cities.csv # Blocked cities 
 ├── package.json      # Frontend dependencies
 └── .gitignore        # Excludes node_modules, pycache
 ```
 
-## Quick Setup & Test ✅
+## Quick Setup & Test 
 
 ### Prerequisites
 ```bash
