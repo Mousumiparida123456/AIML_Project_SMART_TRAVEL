@@ -1,0 +1,13 @@
+source,destination,via,cost,time,distance,mode,switches,travel_time
+Delhi,Jaipur,,500,5,450,train,0,night
+Delhi,Jaipur,Ajmer,600,6,480,bus,1,night
+Delhi,Udaipur,Jaipur,700,8,700,train,1,day
+Mumbai,Goa,,400,10,600,bus,0,night
+Chennai,Bangalore,,300,6,350,train,0,day
+Bangalore,Goa,Mysore,450,8,500,train,1,night
+Mumbai,Delhi,,1200,16,1400,train,0,day
+Delhi,Mumbai,,1300,15,1400,bus,0,day
+Chennai,Goa,Bangalore,800,12,900,train,1,day
+Bangalore,Delhi,,900,14,1300,train,0,night
+Jaipur,Udaipur,,400,6,420,bus,0,day
+Goa,Mumbai,,350,10,600,bus,0,night
