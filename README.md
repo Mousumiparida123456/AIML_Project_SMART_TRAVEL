@@ -77,10 +77,10 @@ Cost: ₹1200 | Time: 8.5h | Bus + Bus (1 switch)
 AI: Cheapest option avoiding blocked cities.
 ```
 
-##Screenshots:
+**Sreenshots:**
+
 <img width="1170" height="815" alt="Screenshot 2026-03-22 232157" src="https://github.com/user-attachments/assets/96c7e560-91c1-4bae-9755-ed00e562bc5a" />
-
-
+<img width="1180" height="556" alt="Screenshot 2026-03-22 232249" src="https://github.com/user-attachments/assets/40f2510d-63d6-49c1-b19d-27a42c65cd57" />
 
 
 ## Backend API Endpoints (Flask)
