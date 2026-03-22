@@ -52,8 +52,32 @@ def explain_plan(plan, preference):
 print("===== SMART TRAVEL PLAN INPUT =====")
 persona = input("Enter your persona (e.g., Student, Tourist): ").strip()
 travel_time = input("Enter travel time (Day/Night): ").strip()
-blocked_cities_input = input("Enter blocked cities separated by commas (if none, leave blank): ").strip()
-blocked_cities = [city.strip() for city in blocked_cities_input.split(',') if city.strip()]
+# Load blocked cities CSV
+blocked_file = os.path.join(current_dir, "..", "data", "blocked_cities.csv")
+try:
+    blocked_df = pd.read_csv(blocked_file)
+    blocked_cities_list = blocked_df['city'].tolist()
+except FileNotFoundError:
+    print(f"Error: Could not find blocked_cities.csv at {blocked_file}")
+    blocked_cities_list = []
+
+print("\nBlocked cities options:")
+for idx, city in enumerate(blocked_cities_list, 1):
+    print(f"{idx}. {city}")
+
+if blocked_cities_list:
+    selection_input = input("Enter blocked city numbers separated by commas (e.g., 1,3) or leave blank for none: ").strip()
+    if selection_input:
+        try:
+            indices = [int(i.strip()) - 1 for i in selection_input.split(',')]
+            blocked_cities = [blocked_cities_list[i] for i in indices if 0 <= i < len(blocked_cities_list)]
+        except ValueError:
+            print("Invalid input. No blocked cities selected.")
+            blocked_cities = []
+    else:
+        blocked_cities = []
+else:
+    blocked_cities = []
 
 # ---------------------------
 # Step 4: Show available sources
@@ -171,5 +195,5 @@ print(f"Distance: {best_route.get('distance', 'N/A')} km")
 print(f"Mode(s): {', '.join(best_route['modes'])}")
 print(f"Switches: {best_route['mode_switches']}")
 
-print("\n🤖 AI Recommendation:")
+print("\n AI Recommendation:")
 print(explain_plan(best_route, preference))
