@@ -37,7 +37,7 @@ Deployment - Node.js / npm
 
 
 ## Project Structure
-
+'''
 smart_travel/
   backend/
     app.py                 # Flask API (auth + /plan)
@@ -54,7 +54,7 @@ smart_travel/
     routes.csv             # Route "database"
     blocked_cities.csv     # Block-list options for the CLI demo
   package.json             # (Placeholder) JS deps; no frontend app code here
-
+'''
  
  ## REPOSITORY LINK
 https://github.com/Mousumiparida123456/AIML_Project_SMART_TRAVEL
