@@ -1,38 +1,55 @@
 import csv
 
+
+def _to_float(value, default=0.0):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return float(default)
+
+
 def load_graph(file_path):
+    """
+    Load routes CSV into an adjacency-list graph.
+
+    Each edge contains:
+      - to, mode, time, cost, distance, travel_time
+    """
     graph = {}
 
-    with open(file_path, 'r') as f:
+    with open(str(file_path), "r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
 
         for row in reader:
-            source = row['source']
-            destination = row['destination']
+            source = (row.get("source") or "").strip()
+            destination = (row.get("destination") or "").strip()
+            if not source or not destination:
+                continue
+
+            mode = (row.get("mode") or "").strip().lower()
+            travel_time = (row.get("travel_time") or "").strip().lower()
 
             edge = {
                 "to": destination,
-                "mode": row['mode'],
-                "time": int(row['time']),
-                "cost": int(row['cost']),
-                "distance": int(row['distance'])
+                "mode": mode,
+                "time": _to_float(row.get("time")),
+                "cost": _to_float(row.get("cost")),
+                "distance": _to_float(row.get("distance")),
+                "travel_time": travel_time,
             }
 
-            if source not in graph:
-                graph[source] = []
+            graph.setdefault(source, []).append(edge)
 
-            graph[source].append(edge)
-
-            # reverse edge
-            if destination not in graph:
-                graph[destination] = []
-
-            graph[destination].append({
-                "to": source,
-                "mode": row['mode'],
-                "time": int(row['time']),
-                "cost": int(row['cost']),
-                "distance": int(row['distance'])
-            })
+            # Add reverse edge (treat routes as bidirectional)
+            graph.setdefault(destination, []).append(
+                {
+                    "to": source,
+                    "mode": mode,
+                    "time": edge["time"],
+                    "cost": edge["cost"],
+                    "distance": edge["distance"],
+                    "travel_time": travel_time,
+                }
+            )
 
     return graph

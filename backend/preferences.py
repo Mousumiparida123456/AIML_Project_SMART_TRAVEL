@@ -3,7 +3,7 @@ def choose_best_plan(plans, preference="cheap", top_n=3):
     if not plans:
         return None, []
 
-    # ✅ REMOVE DUPLICATES (based on path)
+    # REMOVE DUPLICATES (based on path)
     unique = []
     seen_paths = set()
 
@@ -13,14 +13,16 @@ def choose_best_plan(plans, preference="cheap", top_n=3):
             seen_paths.add(path_tuple)
             unique.append(plan)
 
-    # 🔽 SELECT SORT KEY
+    preference = (preference or "cheap").strip().lower()
+
+    # SELECT SORT KEY
     if preference == "cheap":
         key_func = lambda x: x["total_cost"]
 
     elif preference == "fast":
         key_func = lambda x: x["total_time"]
 
-    elif preference == "short":
+    elif preference in {"short", "distance"}:
         key_func = lambda x: x["total_distance"]
 
     elif preference == "comfortable":
@@ -32,7 +34,7 @@ def choose_best_plan(plans, preference="cheap", top_n=3):
     else:
         key_func = lambda x: x["total_cost"]
 
-    # 🔽 SORT UNIQUE PLANS
+    # SORT UNIQUE PLANS
     ranked_plans = sorted(unique, key=key_func)
 
     best_plan = ranked_plans[0]

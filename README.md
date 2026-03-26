@@ -1,138 +1,190 @@
-# Smart Travel Planner 
+# Smart Travel Planner
 
-## Overview
-Smart Travel Planner is an AI-powered travel route optimization system that helps users find the best routes based on their preferences, persona, travel time, and constraints like blocked cities.
+Smart Travel Planner is a small, learning-friendly travel route planner built around a simple CSV "routes database".
+It's meant to be easy to run, easy to read, and good enough to demo common backend ideas (auth, APIs, shortest-path search).
 
-## Features
--  Route optimization (Cheap, Fast, Comfortable, Balanced)
--  Persona-based planning (Student, Tourist, Business, etc.)
--  Day/Night travel filtering
--  Blocked cities selection from predefined list
--  Detailed route explanations with AI reasoning
--  Interactive CLI test interface
--  Flask backend API ready for web deployment
+At a glance:
+
+- `backend/test.py`: an interactive CLI that filters and ranks routes by persona, preference, day/night, and blocked cities.
+- `backend/app.py`: a Flask API with auth that returns a best route between two cities using Dijkstra's algorithm.
+
+## What's in this repo (and what isn't)
+
+Included:
+
+- Interactive CLI planner (persona + preference + day/night + blocked cities)
+- Flask API with `/register`, `/login`, and `/plan`
+- Route explanation text (simple "AI-style" reasoning)
+- Sample data in `data/routes.csv` and `data/blocked_cities.csv`
+
+Not included (yet):
+
+- A working React frontend UI (only a minimal `package.json` exists; there is no `src/` app in this repository)
+- Persistent database (users are stored in-memory and reset when the server restarts)
 
 ## Tech Stack
-```
-Frontend: React + React-Leaflet (Map integration)
-Backend: Python Flask + Pandas
-Data: CSV routes & blocked cities
-Deployment: Node.js/npm for frontend
-```
+
+- Backend: Python + Flask
+- CLI demo: Python + Pandas
+- Auth: JWT (PyJWT)
+- Data: CSV files in `data/`
 
 ## Project Structure
+
 ```
 smart_travel/
-├── backend/          # Flask API modules
-│   ├── app.py        # Main Flask app
-│   ├── auth.py       # Authentication
-│   ├── search.py     # Route search logic
-│   ├── planner.py    # Route planning
-│   ├── persona.py    # Persona handling
-│   ├── preferences.py# Preference matching
-│   └── test.py       # Interactive CLI tester 
-├── data/             # Data files
-│   ├── routes.csv    # Travel routes database
-│   └── blocked_cities.csv # Blocked cities 
-├── package.json      # Frontend dependencies
-└── .gitignore        # Excludes node_modules, pycache
+  backend/
+    app.py                 # Flask API (auth + /plan)
+    auth.py                # In-memory users + JWT helpers
+    search.py              # Dijkstra shortest-path (by cost/time/distance)
+    planner.py             # Convert a path into a route summary
+    explainer.py           # Text explanation for a chosen route
+    constraints.py         # Constraint filters (building block for future)
+    preferences.py         # Ranking helper (building block for future)
+    advanced_features.py   # Switching penalty + random delay
+    test.py                # Interactive CLI demo (recommended start)
+    utils.py               # CSV -> graph loader
+  data/
+    routes.csv             # Route "database"
+    blocked_cities.csv     # Block-list options for the CLI demo
+  package.json             # (Placeholder) JS deps; no frontend app code here
 ```
 
-## Quick Setup & Test 
+## Quick Start (CLI demo)
 
-### Prerequisites
+### 1) Prerequisites
+
+- Python 3.8+
+
+Install dependencies:
+
 ```bash
-# Python dependencies
-pip install flask pandas
-
-# Frontend (if needed later)
-npm install
+pip install -r requirements.txt
 ```
 
-### Test the CLI (Recommended first):
+### 2) Run the CLI
+
 ```bash
 cd backend
 python test.py
 ```
-```
-===== Flow =====
-1. Enter persona: Student
-2. Travel time: Day  
-3. Blocked cities: 1,3 (Delhi, Kolkata)
-4. Source: Mumbai
-5. Destination: Bangalore
-6. Preference: Cheap
-```
 
-**Sample Output:**
-```
-Blocked cities options:
-1. Delhi
-2. Mumbai  
-3. Kolkata
-...
+The CLI will walk you through:
 
-BEST ROUTE: Mumbai → Pune → Bangalore
-Cost: ₹1200 | Time: 8.5h | Bus + Bus (1 switch)
-AI: Cheapest option avoiding blocked cities.
-```
+- Persona (example: `Student`, `Tourist`)
+- Travel time (`Day` or `Night`)
+- Blocked cities (pick from the menu; optional)
+- Source and destination (chosen from available cities in `data/routes.csv`)
+- Preference (`Cheap`, `Fast`, `Comfortable`, `Balanced`)
 
-**Sreenshots:**
+Note: the CLI demo ranks the route options available in `data/routes.csv` (including any intermediate stops listed in the `via` column). It does not run Dijkstra across the whole graph.
 
-<img width="1170" height="815" alt="Screenshot 2026-03-22 232157" src="https://github.com/user-attachments/assets/96c7e560-91c1-4bae-9755-ed00e562bc5a" />
-<img width="1180" height="556" alt="Screenshot 2026-03-22 232249" src="https://github.com/user-attachments/assets/40f2510d-63d6-49c1-b19d-27a42c65cd57" />
+## Run the Flask API
 
+Start the server from the `backend/` directory (important: the app loads `../data/routes.csv` using a relative path):
 
-## Backend API Endpoints (Flask)
 ```bash
-# Run server
 cd backend
 python app.py
 ```
-```
-GET /plan?source=Mumbai&dest=Bangalore&persona=Student&preference=cheap&blocked=Delhi,Kolkata
-```
 
-## Data Format
+The API runs at `http://127.0.0.1:5000` by default.
 
-**routes.csv:**
-```
-source,destination,via,mode,cost,time,distance,switches,travel_time
-Mumbai,Bangalore,"Pune;Hubli",Bus,1200,8.5,550,1,Day
-```
+### Auth endpoints (PowerShell)
 
-**blocked_cities.csv:**
-```
-city
-Delhi
-Mumbai
-...
+Register:
+
+```powershell
+$base = "http://127.0.0.1:5000"
+Invoke-RestMethod "$base/register" -Method Post -ContentType "application/json" -Body (@{ username="demo"; password="demo" } | ConvertTo-Json)
 ```
 
-## Run Full Stack (Future)
-```bash
-# Backend
-cd backend && python app.py
+Login (returns a JWT token):
 
-# Frontend  
-npm start
+```powershell
+$token = (Invoke-RestMethod "$base/login" -Method Post -ContentType "application/json" -Body (@{ username="demo"; password="demo" } | ConvertTo-Json)).token
+$token
 ```
 
-## GitHub Repo
-https://github.com/Mousumiparida123456/AIML_Project_SMART_TRAVEL
+### Plan endpoint
 
-## Future Scope
-- ML dynamic pricing/traffic prediction
-- React Native mobile app
-- Real-time Google Maps
-- AWS cloud deployment
-- OAuth2 authentication
-- Analytics dashboard
-- Multi-country routes
+`/plan` currently:
+
+- Requires an `Authorization` header (supports both raw token and `Bearer <token>`)
+- Accepts JSON `source` + `destination`, and optionally:
+  - `preference`: `cheap`, `fast`, `distance`/`short`, `comfortable`, `balanced`
+  - `persona`: `student`, `business`, `tourist`, `eco` (used as a fallback to set preference)
+  - `travel_time`: `day` or `night`
+  - `blocked_cities`: list (or comma-separated string)
+  - `constraints`: `max_cost`, `max_time`, `max_transfers`, `preferred_mode`
+  - `apply_switch_penalty` (bool) and `switching_penalty` (int, default `50`)
+  - `simulate_delay` (bool) to add a random delay (`0`-`2` hours)
+
+Example:
+
+```powershell
+Invoke-RestMethod "$base/plan" -Method Post -ContentType "application/json" -Headers @{ Authorization = $token } -Body (@{ source="Delhi"; destination="Goa" } | ConvertTo-Json)
+```
+
+Response shape (simplified):
+
+```json
+{
+  "user": "demo",
+  "route": {
+    "path": ["Delhi", "Mumbai", "Goa"],
+    "total_time": 28,
+    "total_cost": 1600,
+    "total_distance": 2000,
+    "modes": ["train", "bus"],
+    "transfers": 2,
+    "mode_switches": 1,
+    "switch_penalty": 50,
+    "delay_added": 1
+  }
+}
+```
+
+## Data Files
+
+### `data/routes.csv`
+
+Columns:
+
+- `source`, `destination`: city names (strings)
+- `via`: optional intermediate stops separated by `;` (used by the CLI demo)
+- `cost`, `time`, `distance`: numeric values used for ranking / shortest-path
+- `mode`: example `train`, `bus`
+- `switches`: number of switches (used by the CLI demo)
+- `travel_time`: `day` or `night` (used by the CLI demo)
+
+Important behavior:
+
+- The Flask API loads routes into a graph and automatically adds a reverse edge for every row (so routes behave like "two-way" connections).
+- For the Flask API graph, only `source`, `destination`, `mode`, `time`, `cost`, and `distance` are used. The CLI demo also uses `via`, `switches`, and `travel_time`.
+
+### `data/blocked_cities.csv`
+
+- One column: `city`
+- Used only by the CLI demo to exclude routes that pass through blocked cities.
+
+## Troubleshooting
+
+- If `backend/app.py` fails to find `../data/routes.csv`, make sure you started the server from inside `backend/` (`cd backend` first).
+- If `/plan` returns `403 Unauthorized`, confirm you sent the token in the `Authorization` header exactly as returned by `/login`.
+
+## Future Scope / Ideas
+
+- Apply persona + constraints in the API (blocked cities, day/night, max cost/time, preferred mode)
+- Return multiple candidate routes (top N)
+- Persistent storage for users (replace in-memory dict)
+- Build a real frontend UI (map visualization, search form)
+
+## Repository link
+
+If you are viewing this project as a fork or copy, the original repo link (if applicable) is:
+`https://github.com/Mousumiparida123456/AIML_Project_SMART_TRAVEL`
 
 ## License
-**MIT License** - Permissive open source license allowing:
-- Free use, copy, modify, distribute (commercial/private OK)
-- No warranty
-- Must keep copyright/license notice
-- Used by React, Node.js, Rails
+
+No `LICENSE` file is included in this repository yet. Add one (for example MIT) if you plan to publish or reuse this code outside a class/project setting.

@@ -3,6 +3,7 @@ def build_plan(graph, path):
     total_cost = 0
     total_distance = 0
     modes = []
+    travel_times = []
 
     for i in range(len(path) - 1):
         current = path[i]
@@ -14,6 +15,7 @@ def build_plan(graph, path):
                 total_cost += edge["cost"]
                 total_distance += edge["distance"]
                 modes.append(edge["mode"])
+                travel_times.append(edge.get("travel_time", ""))
                 break
 
     # Count mode switches
@@ -28,6 +30,7 @@ def build_plan(graph, path):
         "total_cost": total_cost,
         "total_distance": total_distance,
         "modes": modes,
+        "travel_times": travel_times,
         "transfers": len(path) - 1,
         "mode_switches": switches
     }
