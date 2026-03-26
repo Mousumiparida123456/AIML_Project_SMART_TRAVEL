@@ -1,20 +1,27 @@
-# Smart Travel Planner
+## Smart Travel Planner 
 
-Smart Travel Planner is a small, learning-friendly travel route planner built around a simple CSV "routes database".
-It's meant to be easy to run, easy to read, and good enough to demo common backend ideas (auth, APIs, shortest-path search).
+Smart Travel Planner is an AI-powered route optimization system that helps users find the best travel routes based on their preferences, persona, travel time, and constraints (like blocked cities).
 
-At a glance:
-- `backend/test.py`: an interactive CLI that filters and ranks routes by persona, preference, day/night, and blocked cities.
-- `backend/app.py`: a Flask API with auth that returns a best route between two cities using Dijkstra's algorithm.
+It intelligently analyzes available routes and provides the most optimal plan along with a clear explanation.
+
 
 ## Features
 
-- Route preferences: Cheap, Fast, Comfortable, Balanced
-- Persona-based planning (e.g., student, tourist, business)
-- Day/night filtering (CLI demo)
-- Blocked cities (CLI demo)
-- Route explanation text ("AI-style" reasoning)
-- API endpoints for auth + planning (`/register`, `/login`, `/plan`)
+1. Route Optimization
+Choose from: Cheap, Fast, Comfortable, Balanced
+2. Persona-Based Planning
+Supports users like Student, Tourist, Business, etc.
+3. Day/Night Travel Filtering
+Customize routes based on travel time preference
+4. Blocked Cities Handling
+Exclude unwanted cities from routes
+5.AI Recommendation
+Explains why a route is selected
+6. Interactive CLI Interface
+Easy testing via terminal
+7. Backend API Ready
+Built with Flask for future web integration
+8. Tech Stack
 
 ## Screenshots
 
