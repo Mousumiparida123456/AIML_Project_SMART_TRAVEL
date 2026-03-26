@@ -37,24 +37,31 @@ Deployment - Node.js / npm
 
 
 ## Project Structure
-'''
+
+```
 smart_travel/
-  backend/
-    app.py                 # Flask API (auth + /plan)
-    auth.py                # In-memory users + JWT helpers
-    search.py              # Dijkstra shortest-path (by cost/time/distance)
-    planner.py             # Convert a path into a route summary
-    explainer.py           # Text explanation for a chosen route
-    constraints.py         # Constraint filters (building block for future)
-    preferences.py         # Ranking helper (building block for future)
-    advanced_features.py   # Switching penalty + random delay
-    test.py                # Interactive CLI demo (recommended start)
-    utils.py               # CSV -> graph loader
-  data/
-    routes.csv             # Route "database"
-    blocked_cities.csv     # Block-list options for the CLI demo
-  package.json             # (Placeholder) JS deps; no frontend app code here
-'''
+│
+├── backend/
+│   ├── app.py
+│   ├── auth.py
+│   ├── search.py
+│   ├── planner.py
+│   ├── explainer.py
+│   ├── constraints.py
+│   ├── preferences.py
+│   ├── advanced_features.py
+│   ├── test.py
+│   └── utils.py
+│
+├── data/
+│   ├── routes.csv
+│   └── blocked_cities.csv
+│
+├── package.json
+├── .gitignore
+└── README.md
+```
+
  
  ## REPOSITORY LINK
 https://github.com/Mousumiparida123456/AIML_Project_SMART_TRAVEL
