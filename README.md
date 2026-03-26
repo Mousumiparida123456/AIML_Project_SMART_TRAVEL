@@ -8,6 +8,20 @@ At a glance:
 - `backend/test.py`: an interactive CLI that filters and ranks routes by persona, preference, day/night, and blocked cities.
 - `backend/app.py`: a Flask API with auth that returns a best route between two cities using Dijkstra's algorithm.
 
+## Features
+
+- Route preferences: Cheap, Fast, Comfortable, Balanced
+- Persona-based planning (e.g., student, tourist, business)
+- Day/night filtering (CLI demo)
+- Blocked cities (CLI demo)
+- Route explanation text ("AI-style" reasoning)
+- API endpoints for auth + planning (`/register`, `/login`, `/plan`)
+
+## Screenshots
+
+<img width="1170" height="815" alt="Screenshot 2026-03-22 232157" src="https://github.com/user-attachments/assets/96c7e560-91c1-4bae-9755-ed00e562bc5a" />
+<img width="1180" height="556" alt="Screenshot 2026-03-22 232249" src="https://github.com/user-attachments/assets/40f2510d-63d6-49c1-b19d-27a42c65cd57" />
+
 ## What's in this repo (and what isn't)
 
 Included:
